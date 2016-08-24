@@ -79,6 +79,7 @@ const config = {
   postcss(webpack) {
     return {
       defaults: [
+        require('stylelint'),
         require('postcss-import')({
           addDependencyTo: webpack,
         }),
@@ -88,6 +89,7 @@ const config = {
         require('colorguard'),
         require('autoprefixer')({browsers: 'last 2 versions'}),
         require('cssnano'),
+        require('postcss-reporter')({clearMessages: true})
       ],
     };
   },
