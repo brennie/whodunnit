@@ -1,0 +1,106 @@
+#!/usr/bin/env node
+'use strict';
+
+const childProcess = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+const browserSync = require('browser-sync').create();
+const chokidar = require('chokidar');
+const webpack = require('webpack');
+
+
+const parentDir = path.join(__dirname, '..');
+const serverCmd = path.join(parentDir, 'whodunnit', 'commands', 'devserver.py');
+const webpackConfig = Object.assign(require(path.join(parentDir, 'webpack.config')), {
+  watch: true,
+});
+
+let serverProcess = null;
+
+/**
+ * Start the development server.
+ */
+const startServer = () => {
+  console.log('Starting development server...');
+
+  serverProcess = childProcess
+    .spawn('python', [serverCmd], {
+      cwd: parentDir,
+      stdio: 'inherit',
+    });
+};
+
+/**
+ * Stop the development server.
+ */
+const stopServer = (onExit) => {
+  if (!serverProcess)
+    return;
+
+  console.log('Stopping development server...');
+
+  if (typeof onExit === 'function')
+    serverProcess.on('exit', onExit);
+
+  serverProcess.kill('SIGINT');
+  serverProcess = null;
+};
+
+process.on('beforeExit', () => {
+  if (serverProcess)
+    serverProcess.kill('SIGINT')
+});
+
+chokidar.watch(path.join(parentDir, 'whodunnit', '**/*.py'))
+  .on('add', () => stopServer(startServer))
+  .on('change', () => stopServer(startServer))
+  .on('unlink', () => stopServer(startServer))
+  .on('unlinkDir', () => stopServer(startServer))
+  .on('addDir', () => stopServer(startServer))
+  .on('err', e => {
+    console.error(e);
+    process.exit(1);
+  })
+  .on('ready', startServer);
+
+
+let firstRun = true;
+
+webpack(webpackConfig, (err, stats) => {
+  if (err) {
+    console.error(e);
+  } else {
+    console.log(stats.toString({
+      chunks: false,
+      colors: true,
+    }));
+
+    if (firstRun) {
+      firstRun = false;
+
+      browserSync.init({
+        middleware: [require('connect-history-api-fallback')()],
+        notify: {
+          styles: {
+            bottom: 0,
+            borderBottomLeftRadius: 'none',
+            top: 'auto',
+          },
+        },
+        open: false,
+        proxy: 'localhost:8080',
+      });
+    } else {
+      const needFullReload = stats
+        .compilation
+        .modules
+        .some(module => module.built && module.resource && !module.resource.match(/\.css(\.map)?$/));
+
+      if (needFullReload)
+        browserSync.reload();
+      else
+        browserSync.reload('*.css');
+    }
+  }
+});

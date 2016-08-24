@@ -1,9 +1,8 @@
 from aiohttp import web
 
 
-async def handle(request):
-    return web.Response(body=b'')
+def create_app(middlewares=None):
+    if middlewares is None:
+        middlewares = []
 
-
-app = web.Application()
-app.router.add_route('GET', '/', handle, name='root')
+    return web.Application(middlewares=middlewares)
