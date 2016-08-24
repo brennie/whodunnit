@@ -11,7 +11,6 @@ const webpack = require('webpack');
 
 
 const rootDir = path.join(__dirname, '..', '..');
-const serverCmd = path.join(rootDir, 'whodunnit', 'commands', 'devserver.py');
 const webpackConfig = Object.assign(require(path.join(rootDir, 'webpack.config')), {
   watch: true,
 });
@@ -25,7 +24,7 @@ const startServer = () => {
   console.log('Starting development server...');
 
   serverProcess = childProcess
-    .spawn('python', [serverCmd], {
+    .spawn('whodunnit-server', ['--development'], {
       cwd: rootDir,
       stdio: 'inherit',
     });

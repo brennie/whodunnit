@@ -1,0 +1,2 @@
+host: 'localhost' # The host to serve from.
+port: '9999'      # The port to serve from.

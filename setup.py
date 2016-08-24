@@ -90,6 +90,7 @@ setup(
         'aiohttp',
         'aiohttp-index',
         'click',
+        'PyYAML',
     ],
     extras_require={
         'development': [
