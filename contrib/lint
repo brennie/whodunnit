@@ -24,4 +24,7 @@ FLAKE8_ERRORS=$?
 ./contrib/eslint
 ESLINT_ERRORS=$?
 
-exit $((${FLAKE8_ERRORS} || ${ESLINT_ERRORS}))
+./node_modules/.bin/webpack
+WEBPACK_ERRORS=$?
+
+exit $((${FLAKE8_ERRORS} || ${ESLINT_ERRORS} || ${WEBPACK_ERRORS}))

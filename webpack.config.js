@@ -89,7 +89,10 @@ const config = {
         require('colorguard'),
         require('autoprefixer')({browsers: 'last 2 versions'}),
         require('cssnano'),
-        require('postcss-reporter')({clearMessages: true})
+        require('postcss-reporter')({
+          clearMessages: true,
+          throwError: true,
+        }),
       ],
     };
   },
