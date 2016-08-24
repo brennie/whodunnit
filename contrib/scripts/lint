@@ -18,10 +18,10 @@ fi
 
 cd "${GIT_DIR}/.."
 
-./contrib/flake8
+./contrib/scripts/flake8
 FLAKE8_ERRORS=$?
 
-./contrib/eslint
+./contrib/scripts/eslint
 ESLINT_ERRORS=$?
 
 ./node_modules/.bin/webpack

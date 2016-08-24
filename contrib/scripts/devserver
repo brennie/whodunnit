@@ -10,9 +10,9 @@ const chokidar = require('chokidar');
 const webpack = require('webpack');
 
 
-const parentDir = path.join(__dirname, '..');
-const serverCmd = path.join(parentDir, 'whodunnit', 'commands', 'devserver.py');
-const webpackConfig = Object.assign(require(path.join(parentDir, 'webpack.config')), {
+const rootDir = path.join(__dirname, '..', '..');
+const serverCmd = path.join(rootDir, 'whodunnit', 'commands', 'devserver.py');
+const webpackConfig = Object.assign(require(path.join(rootDir, 'webpack.config')), {
   watch: true,
 });
 
@@ -26,7 +26,7 @@ const startServer = () => {
 
   serverProcess = childProcess
     .spawn('python', [serverCmd], {
-      cwd: parentDir,
+      cwd: rootDir,
       stdio: 'inherit',
     });
 };
@@ -52,7 +52,7 @@ process.on('beforeExit', () => {
     serverProcess.kill('SIGINT')
 });
 
-chokidar.watch(path.join(parentDir, 'whodunnit', '**/*.py'))
+chokidar.watch(path.join(rootDir, 'whodunnit', '**/*.py'))
   .on('add', () => stopServer(startServer))
   .on('change', () => stopServer(startServer))
   .on('unlink', () => stopServer(startServer))

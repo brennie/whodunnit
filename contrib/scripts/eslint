@@ -6,7 +6,7 @@
 
 
  const engine = new CLIEngine({
- 	configFile: path.join(__dirname, '..', '.eslintrc.js'),
+ 	configFile: path.join(__dirname, '..', '..', '.eslintrc.js'),
  });
 
  const report = engine.executeOnFiles(['client/**/*.js', 'client/**/*.jsx']);
