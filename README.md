@@ -23,6 +23,12 @@ python setup.py bdist_wheel  # This is the preferred method. (Requires wheel.)
 python setup.py bdist_egg
 ```
 
+## Configuring
+
+An example configuration is provided in `contrib/config` with documented
+options.
+
+
 ## Developing
 
 You can set up a development environment by running:
