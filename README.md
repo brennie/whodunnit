@@ -30,6 +30,7 @@ You can set up a development environment by running:
 ```sh
 npm install
 python setup.py development
+pip install -e .[development]
 ```
 
 After this, you can run the devserver in `./contrib/devserver`. This will launch

@@ -91,6 +91,12 @@ setup(
         'aiohttp-index',
         'click',
     ],
+    extras_require={
+        'development': [
+            'flake8',
+            'flake8-docstrings',
+        ],
+    },
     entry_points={
         'console_scripts': [
             'whodunnit-server = whodunnit.commands.serve:main',
